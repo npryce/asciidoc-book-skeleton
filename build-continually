@@ -1,0 +1,12 @@
+#!/bin/sh
+set -e
+
+./build "$@"
+
+fswatch \
+  --exclude '/.git/' \
+  --exclude='/out/' \
+  --exclude '/.idea/' \
+  --exclude '/README.md$' \
+  --exclude='~$' \
+  -0 --one-per-batch --recursive . | xargs -0 -I {} -n 1 -t ./build "$@"
